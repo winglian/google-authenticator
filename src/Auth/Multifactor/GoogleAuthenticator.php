@@ -9,9 +9,8 @@ namespace Auth\Multifactor;
  */
 class GoogleAuthenticator {
 
-    /**
-     *
-     */
+    private $cryptoAlgorithm = 'sha1';
+
     private $secret;
 
     private $timeStep = 30;
@@ -156,9 +155,25 @@ class GoogleAuthenticator {
 
     public function generateTOTP($timestamp = null)
     {
-        $binary_counter = $this->convertTimestampToBinaryCounter($timestamp);
-        $hash = hash_hmac('sha1', $binary_counter, $this->getBinarySecret(), true);
+        $hash = $this->generateHash($timestamp);
         return $this->truncateHash($hash);
+    }
+
+    public function generateHash($timestamp = null)
+    {
+        $binary_counter = $this->convertTimestampToBinaryCounter($timestamp);
+        $hash = hash_hmac($this->getCryptoAlgorithm(), $binary_counter, $this->getBinarySecret(), true);
+        return $hash;
+    }
+
+    public function getCryptoAlgorithm()
+    {
+        return $this->cryptoAlgorithm;
+    }
+
+    public function setCryptoAlgorithm($cryptoAlgorithm = 'sha1')
+    {
+        $this->cryptoAlgorithm = $cryptoAlgorithm;
     }
 
     public function verifyTOTP($totp, $timestamp = null)
