@@ -2,8 +2,10 @@
     "name": "winglian/google-authenticator",
     "description": "PHP library to work with Google Authenticator",
     "authors": [
-        "name": "Wing Lian",
-        "email": "wing.lian@gmail.com"
+        {
+            "name": "Wing Lian",
+            "email": "wing.lian@gmail.com"
+        }
     ],
     "require": {
         "php": ">=5.3.0"
